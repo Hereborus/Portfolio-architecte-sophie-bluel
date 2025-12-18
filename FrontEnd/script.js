@@ -8,11 +8,11 @@ let filterUL = document.createElement("ul");
 // creating filter buttons
 filtersNames.forEach((Name) => {
     let filterLI = document.createElement("li");
-    let buttonFilter = document.createElement("button");
+    let filterButtons = document.createElement("button");
 
-    buttonFilter.innerText = Name;
+    filterButtons.innerText = Name;
 
-    filterLI.appendChild(buttonFilter);
+    filterLI.appendChild(filterButtons);
     filterUL.appendChild(filterLI);
 });
 
