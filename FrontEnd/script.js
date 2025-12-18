@@ -1,22 +1,23 @@
 // filter names list for the buttons
 const filtersNames = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
 
-let galleryDiv = document.querySelector(".gallery");
-
 let filterUL = document.createElement("ul");
 
 // creating filter buttons
-filtersNames.forEach((Name) => {
+filtersNames.forEach((names) => {
     let filterLI = document.createElement("li");
     let filterButtons = document.createElement("button");
+    filterButtons.className = "filter-button";
 
-    filterButtons.innerText = Name;
-
+    filterButtons.innerText = names;
     filterLI.appendChild(filterButtons);
     filterUL.appendChild(filterLI);
 });
 
 // inserting filter button list before gallery
+
+let galleryDiv = document.querySelector(".gallery");
+
 galleryDiv.insertAdjacentElement("beforebegin", filterUL);
 console.log(filterUL);
 
@@ -38,15 +39,15 @@ filterButtons.forEach((button) => {
     button.style.color = "#1d6154";
 });
 
-// styling buttons hover state and return default
-filterButtons.forEach((button) => {
-    button.addEventListener("mouseenter", () => {
-        button.style.backgroundColor = "#1d6154";
-        button.style.color = "white";
-        button.style.cursor = "pointer";
-    });
-    button.addEventListener("mouseleave", () => {
-        button.style.backgroundColor = "white";
-        button.style.color = "#1d6154";
-    });
-});
+// // styling buttons hover state and return default
+// filterButtons.forEach((button) => {
+//     button.addEventListener("mouseenter", () => {
+//         button.style.backgroundColor = "#1d6154";
+//         button.style.color = "white";
+//         button.style.cursor = "pointer";
+//     });
+//     button.addEventListener("mouseleave", () => {
+//         button.style.backgroundColor = "white";
+//         button.style.color = "#1d6154";
+//     });
+// });
