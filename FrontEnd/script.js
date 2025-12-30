@@ -19,10 +19,7 @@ async function fetchCategories() {
     }
 }
 
-// fetchCategories().then((categories) => {
-//     console.log(categories);
-// });
-
+// Create category filter buttons
 function createCategoryButtons() {
     fetchCategories().then((categories) => {
         const filterList = document.createElement("ul");
@@ -40,12 +37,16 @@ function createCategoryButtons() {
             filterItem.appendChild(filterButton);
             filterItem.className = "filter-item";
             filterList.appendChild(filterItem);
+            filterButton.addEventListener("click", () => {
+                filterCategory(category.id);
+            });
         });
     });
 }
 
 createCategoryButtons();
 
+// fetch works api
 async function fetchWorks() {
     try {
         const responseWorks = await fetch("http://localhost:5678/api/works");
@@ -62,6 +63,7 @@ async function fetchWorks() {
     }
 }
 
+// Display works in gallery
 function displayWorks() {
     fetchWorks().then((works) => {
         works.forEach((work) => {
@@ -77,16 +79,14 @@ function displayWorks() {
 }
 displayWorks();
 
-let filterButtons = document.getElementsByClassName("filter-button");
-addEventListener("click", (filterButtons) => {
-    let categoryId = filterButtons.target.dataset.categoryId;
-    console.log(categoryId);
-    filterItems = document.querySelectorAll(".gallery figure");
-    filterItems.forEach((item) => {
-        if (categoryId == 0 || item.dataset.categoryId === categoryId) {
-            item.style.display = "block";
+// Filter works by category
+function filterCategory(categoryId) {
+    const figures = document.querySelectorAll(".gallery figure");
+    figures.forEach((figure) => {
+        if (categoryId == 0 || figure.dataset.categoryId == categoryId) {
+            figure.style.display = "block";
         } else {
-            item.style.display = "none";
+            figure.style.display = "none";
         }
     });
-});
+}
