@@ -29,14 +29,21 @@ function createCategoryButtons() {
         galleryDiv.insertAdjacentElement("beforebegin", filterList);
 
         categories.forEach((category) => {
+            // create list list for buttons
             const filterItem = document.createElement("li");
+            filterItem.className = "filter-item";
+
+            // Create button for each category
             const filterButton = document.createElement("button");
+            filterButton.className = "filter-button";
             filterButton.textContent = category.name;
             filterButton.dataset.categoryId = category.id;
-            filterButton.className = "filter-button";
+
+            // Append button to list item and list item to filter list
             filterItem.appendChild(filterButton);
-            filterItem.className = "filter-item";
             filterList.appendChild(filterItem);
+
+            // Add event listener to filter works on button click
             filterButton.addEventListener("click", () => {
                 filterCategory(category.id);
             });
@@ -66,8 +73,8 @@ async function fetchWorks() {
 // Display works in gallery
 function displayWorks() {
     fetchWorks().then((works) => {
+        const galleryDiv = document.querySelector(".gallery");
         works.forEach((work) => {
-            const galleryDiv = document.querySelector(".gallery");
             galleryDiv.innerHTML += `<figure data-category-id="${work.categoryId}">
                                     <img
                                         src="${work.imageUrl}"
