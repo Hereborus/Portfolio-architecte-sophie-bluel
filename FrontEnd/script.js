@@ -77,7 +77,16 @@ function displayWorks() {
 }
 displayWorks();
 
-document.getElementsByClassName("filter-button");
-addEventListener("click", (filterButton) => {
-    console.log("click");
+let filterButtons = document.getElementsByClassName("filter-button");
+addEventListener("click", (filterButtons) => {
+    let categoryId = filterButtons.target.dataset.categoryId;
+    console.log(categoryId);
+    filterItems = document.querySelectorAll(".gallery figure");
+    filterItems.forEach((item) => {
+        if (categoryId == 0 || item.dataset.categoryId === categoryId) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+    });
 });
