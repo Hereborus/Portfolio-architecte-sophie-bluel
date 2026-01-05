@@ -47,6 +47,17 @@ function createCategoryButtons() {
             filterButton.addEventListener("click", () => {
                 filterCategory(category.id);
             });
+
+            // Add active class toggle on button click
+            filterButton.addEventListener("click", () => {
+                // Remove 'active' class from all buttons
+                document
+                    .querySelectorAll(".filter-button")
+                    .forEach((btn) => btn.classList.remove("active"));
+
+                // Add 'active' class to clicked button
+                filterButton.classList.add("active");
+            });
         });
     });
 }
