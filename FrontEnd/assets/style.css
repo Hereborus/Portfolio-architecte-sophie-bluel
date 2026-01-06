@@ -129,7 +129,6 @@ table {
 }
 /** end reset css**/
 body {
-    max-width: 1140px;
     margin: auto;
     font-family: "Work Sans";
     font-size: 14px;
@@ -293,4 +292,40 @@ footer nav ul {
 a {
     text-decoration: none;
     color: inherit;
+}
+
+#edit-banner {
+    width: 100%;
+    background-color: #000000;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 1000;
+    box-sizing: border-box;
+    gap: 5px;
+}
+
+#main-container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+#project-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#edit-project-button {
+    font-family: inherit;
+    color: black;
+    background-color: white;
+    border: none;
+    padding: 9px 20px;
+    cursor: pointer;
+    gap: 5px;
+    flex-direction: column;
 }
