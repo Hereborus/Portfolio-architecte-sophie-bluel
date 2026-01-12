@@ -352,7 +352,7 @@ a {
     height: 688px;
     max-width: 90%;
     border-radius: 8px;
-    margin-top: 0px;
+    margin: 0px;
     display: flex;
     flex-direction: column;
     border: none;
