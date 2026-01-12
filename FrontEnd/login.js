@@ -6,6 +6,13 @@ loginForm.addEventListener("submit", async function (loginSubmite) {
     console.log("Email:", email);
     console.log("Password:", password);
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email) || !password) {
+        console.error("Invalid email or password");
+        return;
+    }
+
     try {
         const logincredential = await fetch(
             "http://localhost:5678/api/users/login",
