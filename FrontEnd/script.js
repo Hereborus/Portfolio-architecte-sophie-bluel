@@ -234,24 +234,36 @@ backModalButton.addEventListener("click", () => {
     uploadContent.classList.remove("hidden");
 });
 
+// modal gallery display works with delete buttons
 function modalGallery() {
     fetchWorks().then((works) => {
         const modalGallery = document.getElementById("galery-modal");
+
         works.forEach((work) => {
+            // inject all figures
             modalGallery.innerHTML += `<figure data-work-id="${work.id}">
                                     <img
                                         src="${work.imageUrl}"
                                         alt="${work.title}" />
+                                        <button class="delete-btn" data-id="${work.id}">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
                                 </figure>`;
         });
-        const figures = modalGallery.querySelectorAll("figure");
-        figures.forEach((figure, work) => {
-            figure.innerHTML += `<button class="delete-btn" data-id="${work.id}"><i class="fa-solid fa-trash-can"></i></button>`;
-        });
+
+        // add delete buttons
         const deleteButtons = modalGallery.querySelectorAll(".delete-btn");
+
+        // function of the delete buttons
         deleteButtons.forEach((button) => {
-            button.addEventListener("click", (e) => {
+            button.addEventListener("click", deleteFunction);
+
+            function deleteFunction(e) {
+                e.preventDefault();
+                // retrive work id of button clicked
                 const workId = e.currentTarget.dataset.id;
+
+                // send delete request to api with authentication
                 fetch(`http://localhost:5678/api/works/${workId}`, {
                     method: "DELETE",
                     headers: {
@@ -260,6 +272,7 @@ function modalGallery() {
                         )}`,
                     },
                 })
+                    // handle response
                     .then((response) => {
                         if (response.ok) {
                             // Remove the figure from the modal gallery
@@ -283,12 +296,14 @@ function modalGallery() {
                     .catch((error) => {
                         console.error("Error:", error);
                     });
-            });
+            }
         });
     });
 }
+
 modalGallery();
 
+// Image upload functionality
 const fileInput = document.getElementById("img-input");
 
 const inputButton = document.getElementById("upload-BTN");
@@ -297,16 +312,19 @@ const previewImg = document.getElementById("preview-image");
 
 const uploadContent = document.getElementById("upload-content");
 
+// open file dialog on button click
 inputButton.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
     fileInput.click();
 });
 
+// prevent event propagation on file input click
 fileInput.addEventListener("click", (e) => {
     e.stopPropagation();
 });
 
+// handle file selection and preview
 fileInput.addEventListener("change", (event) => {
     event.stopPropagation();
     const file = fileInput.files[0];
@@ -323,8 +341,81 @@ fileInput.addEventListener("change", (event) => {
     }
 });
 
+// open file dialog on preview image click
 previewImage.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
     fileInput.click();
+});
+
+const categoryList = document.getElementById("cat-list");
+
+// populate category dropdown in add project modal
+fetchCategories().then((categories) => {
+    categories.forEach((category) => {
+        if (category.id !== 0) {
+            const option = document.createElement("option");
+            option.value = category.id;
+            option.textContent = category.name;
+            categoryList.appendChild(option);
+        }
+    });
+});
+
+// handle add project form submission
+const addProjectForm = document.getElementById("edit-project-form");
+addProjectForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(addProjectForm);
+    const imageFile = fileInput.files[0];
+    const title = formData.get("project-title");
+    const categoryId = formData.get("categorie-list");
+    formData.append("image", imageFile);
+    formData.append("title", title);
+    formData.append("category", categoryId);
+    fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Failed to add project");
+            }
+        })
+        .then((newWork) => {
+            // Add the new work to the main gallery
+            const galleryDiv = document.querySelector(".gallery");
+            const newFigure = document.createElement("figure");
+            newFigure.dataset.categoryId = newWork.categoryId;
+            newFigure.dataset.workId = newWork.id;
+            newFigure.innerHTML = `<img src="${newWork.imageUrl}" alt="${newWork.title}" data-category-id="${newWork.categoryId}" data-work-id="${newWork.id}" />
+                                    <figcaption>${newWork.title}</figcaption>`;
+            galleryDiv.appendChild(newFigure);
+            // Also add the new work to the modal gallery
+            const modalGallery = document.getElementById("galery-modal");
+            const newModalFigure = document.createElement("figure");
+            newModalFigure.dataset.workId = newWork.id;
+            newModalFigure.innerHTML = `<img src="${newWork.imageUrl}" alt="${newWork.title}" data-work-id="${newWork.id}" />
+                                        <button class="delete-btn" data-id="${newWork.id}"><i class="fa-solid fa-trash-can"></i></button>`;
+            const deleteButton = newModalFigure.querySelector(".delete-btn");
+            deleteButton.addEventListener("click", deleteFunction);
+            modalGallery.appendChild(newModalFigure);
+            // Reset the form and preview
+            addProjectForm.reset();
+            previewImage.src = "";
+            previewImage.classList.add("hidden");
+            uploadContent.classList.remove("hidden");
+            // Return to the project list modal content
+            modalAddProject.classList.add("hidden");
+            modalProjectList.classList.remove("hidden");
+            backModalButton.classList.add("hidden");
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 });

@@ -514,3 +514,13 @@ body.modal-open {
     max-height: 169px;
     object-fit: contain;
 }
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    background: none;
+}
