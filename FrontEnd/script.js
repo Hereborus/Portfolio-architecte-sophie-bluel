@@ -431,3 +431,20 @@ addProjectForm.addEventListener("submit", (e) => {
             console.error("Error:", error);
         });
 });
+
+const submitButton = document.querySelector(".submit-button");
+const titleInput = document.getElementById("project-title-input");
+const categorySelect = document.getElementById("cat-list");
+// enable submit button only when all fields are filled
+addProjectForm.addEventListener("input", () => {
+    if (
+        titleInput.value.trim() !== "" &&
+        categorySelect.value !== "" &&
+        fileInput.files.length > 0
+    ) {
+        submitButton.classList.add("enabled");
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+    }
+});

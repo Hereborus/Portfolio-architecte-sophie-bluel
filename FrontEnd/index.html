@@ -104,7 +104,7 @@
                 </button>
             </div>
             <div id="modal-content-gallery" class="">
-                <h2>Galerie photo</h2>
+                <h2 id="modal-galery-title">Galerie photo</h2>
                 <div id="galery-modal">
                     <!-- La liste des projets sera insérée ici par JavaScript -->
                 </div>
@@ -112,7 +112,7 @@
             </div>
 
             <div id="modal-content-add" class="hidden">
-                <h2>Ajout photo</h2>
+                <h2 id="modal-add-title">Ajout photo</h2>
                 <p class="hidden error-upload">formulaire invalide</p>
                 <form id="edit-project-form">
                     <div id="image-upload-zone">
@@ -142,6 +142,7 @@
                     <label for="cat-list">Catégorie</label>
 
                     <select name="categorie-list" id="cat-list">
+                        <option value=""></option>
                         <!-- Les catégories seront insérées ici par JavaScript -->
                     </select>
                     <button class="submit-button" type="submit">Valider</button>
