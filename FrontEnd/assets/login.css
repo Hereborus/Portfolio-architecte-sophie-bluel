@@ -59,3 +59,7 @@ form a {
     color: #1d6154;
     align-self: center;
 }
+
+.hidden {
+    display: none !important;
+}

@@ -5,11 +5,12 @@ loginForm.addEventListener("submit", async function (loginSubmite) {
     let password = document.getElementById("password").value;
     console.log("Email:", email);
     console.log("Password:", password);
-
+    const errorMessage = document.getElementById("credential-error");
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email) || !password) {
         console.error("Invalid email or password");
+        errorMessage.classList.remove("hidden");
         return;
     }
 
@@ -27,8 +28,8 @@ loginForm.addEventListener("submit", async function (loginSubmite) {
                 }),
             }
         );
-
         if (!logincredential.ok) {
+            errorMessage.classList.remove("hidden");
             throw new Error("Login failed");
         }
 

@@ -114,6 +114,16 @@ function editionMode() {
     editBanner.innerHTML = `<i class="fa-regular fa-pen-to-square"></i><p>Mode édition</p>`;
     document.body.insertAdjacentElement("afterbegin", editBanner);
 
+    const logoutLink = document.querySelector(".logout");
+    logoutLink.classList.remove("hidden");
+    logoutLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("token");
+        window.location.reload();
+    });
+    const loginLink = document.querySelector(".login");
+    loginLink.classList.add("hidden");
+
     // add edit project button
     const projectTitle = document.getElementById("project-title");
     const editProjectButton = document.createElement("button");
@@ -384,6 +394,8 @@ addProjectForm.addEventListener("submit", (e) => {
             if (response.ok) {
                 return response.json();
             } else {
+                const errorUpload = document.querySelector(".error-upload");
+                errorUpload.classList.remove("hidden");
                 throw new Error("Failed to add project");
             }
         })

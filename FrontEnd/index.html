@@ -27,7 +27,12 @@
                     <ul>
                         <li><a href="#portfolio">projets</a></li>
                         <li><a href="#contact">contact</a></li>
-                        <li><a href="login.html">login</a></li>
+                        <div>
+                            <li>
+                                <a href="login.html" class="login">login</a>
+                            </li>
+                            <li><a href="" class="logout hidden">logout</a></li>
+                        </div>
                         <li>
                             <img
                                 src="./assets/icons/instagram.png"
@@ -108,6 +113,7 @@
 
             <div id="modal-content-add" class="hidden">
                 <h2>Ajout photo</h2>
+                <p class="hidden error-upload">formulaire invalide</p>
                 <form id="edit-project-form">
                     <div id="image-upload-zone">
                         <img
