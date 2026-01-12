@@ -199,6 +199,7 @@ dialog.addEventListener("click", (e) => {
         previewImage.src = "";
         previewImage.classList.add("hidden");
         uploadContent.classList.remove("hidden");
+        addProjectForm.reset();
     }
 });
 
@@ -215,6 +216,7 @@ function closeModal() {
     previewImage.src = "";
     previewImage.classList.add("hidden");
     uploadContent.classList.remove("hidden");
+    addProjectForm.reset();
 }
 
 // open add project modal content
@@ -232,6 +234,7 @@ backModalButton.addEventListener("click", () => {
     previewImage.src = "";
     previewImage.classList.add("hidden");
     uploadContent.classList.remove("hidden");
+    addProjectForm.reset();
 });
 
 // modal gallery display works with delete buttons
@@ -257,48 +260,45 @@ function modalGallery() {
         // function of the delete buttons
         deleteButtons.forEach((button) => {
             button.addEventListener("click", deleteFunction);
-
-            function deleteFunction(e) {
-                e.preventDefault();
-                // retrive work id of button clicked
-                const workId = e.currentTarget.dataset.id;
-
-                // send delete request to api with authentication
-                fetch(`http://localhost:5678/api/works/${workId}`, {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
-                })
-                    // handle response
-                    .then((response) => {
-                        if (response.ok) {
-                            // Remove the figure from the modal gallery
-                            const figureToDelete = button.closest("figure");
-                            console.log(figureToDelete);
-                            figureToDelete.remove();
-                            // Also remove the figure from the main gallery
-                            const mainGallery =
-                                document.querySelector(".gallery");
-                            const mainFigureToDelete =
-                                mainGallery.querySelector(
-                                    `figure[data-work-id="${figureToDelete.dataset.workId}"]`
-                                );
-                            if (mainFigureToDelete) {
-                                mainFigureToDelete.remove();
-                            }
-                        } else {
-                            throw new Error("Failed to delete the work");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-            }
         });
     });
+}
+function deleteFunction(e) {
+    e.preventDefault();
+    // retrive work id of button clicked
+    const workId = e.currentTarget.dataset.id;
+
+    // send delete request to api with authentication
+    fetch(`http://localhost:5678/api/works/${workId}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+        // handle response
+        .then((response) => {
+            if (response.ok) {
+                // Remove the figure from the modal gallery
+                const figureToDelete = document.querySelector(
+                    `#galery-modal figure[data-work-id="${workId}"]`
+                );
+                console.log(figureToDelete);
+                figureToDelete.remove();
+                // Also remove the figure from the main gallery
+                const mainGallery = document.querySelector(".gallery");
+                const mainFigureToDelete = mainGallery.querySelector(
+                    `figure[data-work-id="${figureToDelete.dataset.workId}"]`
+                );
+                if (mainFigureToDelete) {
+                    mainFigureToDelete.remove();
+                }
+            } else {
+                throw new Error("Failed to delete the work");
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }
 
 modalGallery();
